@@ -1,0 +1,12 @@
+<!-- Button -->
+
+<button 
+        mat-mini-fab
+        [class.mat-accent]="config.scheme === 'dark'"
+        (click)="toggleScheme()">
+        <mat-icon
+            class="icon-size-5"
+            [svgIcon]="config.scheme === 'dark' ? 'heroicons_solid:sun' : 'heroicons_solid:moon'">
+        </mat-icon>
+</button>
+
