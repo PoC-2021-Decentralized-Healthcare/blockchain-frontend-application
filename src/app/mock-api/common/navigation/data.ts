@@ -1,14 +1,43 @@
 /* eslint-disable */
 import { FuseNavigationItem } from '@fuse/components/navigation';
 
+
 export const defaultNavigation: FuseNavigationItem[] = [
     {
         id      : 'dashboards',
-        title   : 'Dashboards',
-        subtitle: 'Unique dashboard designs',
+        title   : 'Medical Records',
+        subtitle: 'My medical records / Blockchain',
         type    : 'group',
         icon    : 'heroicons_outline:home',
         children: [
+
+            {
+                id   : 'apps.medical.records',
+                title: 'My Records',
+                type : 'basic',
+                link : '/apps/medical/inventory'
+            }
+            
+
+        ]
+    } 
+    
+
+];
+
+
+
+
+
+export const defaultNavigation_2: FuseNavigationItem[] = [
+    {
+        id      : 'dashboards',
+        title   : 'Medical Records',
+        subtitle: 'My medical records / Blockchain',
+        type    : 'group',
+        icon    : 'heroicons_outline:home',
+        children: [
+            
             {
                 id   : 'dashboards.project',
                 title: 'Project',
@@ -1152,6 +1181,12 @@ export const defaultNavigation: FuseNavigationItem[] = [
         ]
     }
 ];
+
+
+
+
+
+
 export const compactNavigation: FuseNavigationItem[] = [
     {
         id      : 'dashboards',
