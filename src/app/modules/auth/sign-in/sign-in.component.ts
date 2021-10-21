@@ -45,7 +45,7 @@ export class AuthSignInComponent implements OnInit
     {
         // Create the form
         this.signInForm = this._formBuilder.group({
-            email     : ['hughes.brian@company.com', [Validators.required, Validators.email]],
+            email     : ['patient@blockchain.com', [Validators.required, Validators.email]],
             password  : ['admin', Validators.required],
             rememberMe: ['']
         });
@@ -75,7 +75,15 @@ export class AuthSignInComponent implements OnInit
         // Sign in
         this._authService.signIn(this.signInForm.value)
             .subscribe(
-                () => {
+                (response) => {
+
+                    
+
+
+                    sessionStorage.setItem('userData', JSON.stringify(response.user));
+
+                    console.log(response)
+
 
                     // Set the redirect url.
                     // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user

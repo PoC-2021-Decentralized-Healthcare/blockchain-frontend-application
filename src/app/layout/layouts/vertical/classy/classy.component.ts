@@ -20,6 +20,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
     navigation: Navigation;
     user: User;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    showQuickChat: boolean = false;
 
     /**
      * Constructor

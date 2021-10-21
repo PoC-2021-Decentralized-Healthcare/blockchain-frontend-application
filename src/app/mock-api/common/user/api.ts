@@ -33,7 +33,10 @@ export class UserMockApi
         // -----------------------------------------------------------------------------------------------------
         this._fuseMockApiService
             .onGet('api/common/user')
-            .reply(() => [200, cloneDeep(this._user)]);
+            .reply(() => [200, JSON.parse(sessionStorage.getItem('userData'))]);
+
+            
+            //.reply(() => [200, cloneDeep(this._user)]);
 
         // -----------------------------------------------------------------------------------------------------
         // @ User - PATCH

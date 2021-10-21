@@ -9,17 +9,17 @@ import { InitialDataResolver } from 'app/app.resolvers';
 export const appRoutes: Route[] = [
 
     // Redirect empty path to '/home'
-    {path: '', pathMatch : 'full', redirectTo: 'home'},
+    {path: '', pathMatch : 'full', redirectTo: 'example'},
 
     // Redirect signed in user to the '/home'
     //
     // After the user signs in, the sign in page will redirect the user to the 'signed-in-redirect'
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
-    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'home'},
+    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'example'},
 
     // Auth routes for guests
-    /*
+
     {
         path: '',
         canActivate: [NoAuthGuard],
@@ -36,9 +36,9 @@ export const appRoutes: Route[] = [
             {path: 'sign-up', loadChildren: () => import('app/modules/auth/sign-up/sign-up.module').then(m => m.AuthSignUpModule)}
         ]
     },
-    */
+
     // Auth routes for authenticated users
-    /*
+
     {
         path: '',
         canActivate: [AuthGuard],
@@ -52,7 +52,7 @@ export const appRoutes: Route[] = [
             {path: 'unlock-session', loadChildren: () => import('app/modules/auth/unlock-session/unlock-session.module').then(m => m.AuthUnlockSessionModule)}
         ]
     },
-    */
+
     // Landing routes
     {
         path: '',
@@ -75,11 +75,12 @@ export const appRoutes: Route[] = [
             initialData: InitialDataResolver,
         },
         children   : [
-            //{path: 'example', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
+            {path: 'example', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
         ]
     },
 
     // Public routes
+    /*
     {
         path       : '',
         component  : LayoutComponent,
@@ -91,7 +92,8 @@ export const appRoutes: Route[] = [
             {path: 'finance', loadChildren: () => import('app/modules/admin/dashboards/finance/finance.module').then(m => m.FinanceModule)},
         ]
     },
-
+    */
+   
     // Unmatched routes will be redirected to home
     { path: '**', redirectTo: 'home', pathMatch: 'full' }
 
