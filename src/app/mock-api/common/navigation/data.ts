@@ -13,7 +13,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
 
             {
                 id   : 'apps.medical.records',
-                title: 'My Records',
+                title: 'My Medical Records',
                 type : 'basic',
                 link : '/apps/medical/inventory'
             }
