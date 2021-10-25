@@ -7,7 +7,7 @@ import { merge, Observable, Subject } from 'rxjs';
 import { debounceTime, map, switchMap, takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { InventoryBrand, InventoryCategory, InventoryPagination, InventoryProduct, InventoryTag, InventoryVendor } from 'app/modules/admin/apps/ecommerce/inventory/inventory.types';
+import { InventoryBrand, InventoryCategory, InventoryPagination, InventoryProduct, InventoryTag, InventoryVendor, patientRecord } from 'app/modules/admin/apps/ecommerce/inventory/inventory.types';
 import { InventoryService } from 'app/modules/admin/apps/ecommerce/inventory/inventory.service';
 
 @Component({
@@ -17,20 +17,35 @@ import { InventoryService } from 'app/modules/admin/apps/ecommerce/inventory/inv
         /* language=SCSS */
         `
             .inventory-grid {
-                grid-template-columns: 48px auto 40px;
+                grid-template-columns: 48px auto 40px 40px 40px;
 
                 @screen sm {
-                    grid-template-columns: 48px auto 112px 72px;
+                    grid-template-columns: 48px auto 112px 72px 72px 72px;
                 }
 
                 @screen md {
-                    grid-template-columns: 48px 112px auto 112px 72px;
+                    grid-template-columns: 48px 112px auto 112px 72px 72px 72px;
                 }
 
                 @screen lg {
-                    grid-template-columns: 48px 112px auto 112px 96px 96px 72px;
+                    grid-template-columns: 48px 112px auto 96px 112px 96px 112px 156px 48px;
                 }
             }
+            .inventory-grid-2 {
+                grid-template-columns: 48px 256px 196px auto 48px;
+
+                @screen sm {
+                    grid-template-columns: 48px 256px 196px auto 48px;
+                }
+
+                @screen md {
+                    grid-template-columns: 48px 256px 196px auto 48px;
+                }
+
+                @screen lg {
+                    grid-template-columns: 48px 256px 196px auto 48px;
+                }
+            }            
         `
     ],
     encapsulation  : ViewEncapsulation.None,
@@ -58,6 +73,8 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     vendors: InventoryVendor[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
+
+    showShare: boolean = false;
     /**
      * Constructor
      */
@@ -102,6 +119,9 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
             currentImageIndex: [0], // Image index that is currently being viewed
             active           : [false]
         });
+
+
+
 
         // Get the brands
         this._inventoryService.brands$
@@ -192,11 +212,6 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
         if ( this._sort && this._paginator )
         {
             // Set the initial sort
-            this._sort.sort({
-                id          : 'name',
-                start       : 'asc',
-                disableClear: true
-            });
 
             // Mark for check
             this._changeDetectorRef.markForCheck();
@@ -353,7 +368,8 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
 
         // If there is a tag...
         const tag = this.filteredTags[0];
-        const isTagApplied = this.selectedProduct.tags.find(id => id === tag.id);
+        const isTagApplied = false 
+        
 
         // If the found tag is already applied to the product...
         if ( isTagApplied )
@@ -429,14 +445,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
      */
     addTagToProduct(tag: InventoryTag): void
     {
-        // Add the tag
-        this.selectedProduct.tags.unshift(tag.id);
 
-        // Update the selected product form
-        this.selectedProductForm.get('tags').patchValue(this.selectedProduct.tags);
-
-        // Mark for check
-        this._changeDetectorRef.markForCheck();
     }
 
     /**
@@ -446,14 +455,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
      */
     removeTagFromProduct(tag: InventoryTag): void
     {
-        // Remove the tag
-        this.selectedProduct.tags.splice(this.selectedProduct.tags.findIndex(item => item === tag.id), 1);
 
-        // Update the selected product form
-        this.selectedProductForm.get('tags').patchValue(this.selectedProduct.tags);
-
-        // Mark for check
-        this._changeDetectorRef.markForCheck();
     }
 
     /**
@@ -484,6 +486,10 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
         return !!!(inputValue === '' || this.tags.findIndex(tag => tag.title.toLowerCase() === inputValue.toLowerCase()) > -1);
     }
 
+
+    toggleShare(): void {
+        this.showShare = !this.showShare;
+    }
     /**
      * Create product
      */

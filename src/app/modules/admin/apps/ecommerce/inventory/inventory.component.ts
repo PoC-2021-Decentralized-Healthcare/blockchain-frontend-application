@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { InventoryBrand, InventoryCategory, InventoryPagination, InventoryProduct, InventoryTag, InventoryVendor, patientRecord } from 'app/modules/admin/apps/ecommerce/inventory/inventory.types';
 
 @Component({
     selector       : 'inventory',
