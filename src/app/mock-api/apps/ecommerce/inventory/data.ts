@@ -134,8 +134,7 @@ export const fhirRecords = [
 
         ofchain_id: "99515b49-d187-4396-adb1-23aa156319a6",
         owner: "G.Sakellaris",
-        shared: ["V.Liagkou"],
-
+        shared: "V.Liagkou",
 
         record: {
 
@@ -196,7 +195,7 @@ export const fhirRecords = [
         ofchain_id: "88515b49-d187-4396-adb1-23aa156319a6",
 
         owner: "G.Sakellaris",
-        shared: ["V.Liagkou"],
+        shared: "V.Liagkou",
 
         record: {
             fullUrl: "urn:uuid:c81e6d13-ac0f-4937-98a2-1554562d0bee",

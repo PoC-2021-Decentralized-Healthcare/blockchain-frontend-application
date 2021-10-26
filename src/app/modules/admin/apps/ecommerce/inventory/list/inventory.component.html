@@ -62,25 +62,29 @@
                 </div>
 
 
-
                 <div class="inventory-grid-2 grid items-center gap-4 py-3 px-6 md:px-8 border-b">
                     <!-- Image -->
                     <div class="flex items-center">
                         <div
                             class="relative flex flex-0 items-center justify-center w-12 h-12 mr-6 rounded overflow-hidden border">
                             <img class="w-8" [alt]="'Image'"
-                                [src]="'assets/images/apps/ecommerce/products/1.svg'">
+                                [src]="'assets/images/avatars/male-07.jpg'">
                         </div>
                     </div>
                     <!-- SKU -->
-                    <div class="hidden md:block truncate">5f339d06-b1d0-366b-8578-1dffecfe4f07</div>
+                    <div class="hidden md:block truncate">dfaad35d-07a3-4447-a6c3-d8c3d54fd5dg</div>
                     <!-- Active -->
-                    <div class="hidden lg:block">Healthcare Provider</div>
+                    <div class="hidden lg:block">Hospital@Blockchain</div>
                     <!-- Name -->
-                    <div class="truncate">PCP218528</div>
+                    <div class="truncate">hospital@blockchain.com</div>
                     <!-- SKU -->
-                    <div>Y/N</div>
+                    <div>
+                        <button mat-flat-button [color]="'primary'" (click)="openConfirmationDialog()">
+                            <span>Share</span>
+                        </button>                        
+                    </div>
                 </div>
+
 
                 <div class="inventory-grid-2 grid items-center gap-4 py-3 px-6 md:px-8 border-b">
                     <!-- Image -->
@@ -98,27 +102,11 @@
                     <!-- Name -->
                     <div class="truncate">LOWELL GENERAL HOSPITAL</div>
                     <!-- SKU -->
-                    <div>Y/N</div>
-
-                </div>
-
-                <div class="inventory-grid-2 grid items-center gap-4 py-3 px-6 md:px-8 border-b">
-                    <!-- Image -->
-                    <div class="flex items-center">
-                        <div
-                            class="relative flex flex-0 items-center justify-center w-12 h-12 mr-6 rounded overflow-hidden border">
-                            <img class="w-8" [alt]="'Image'"
-                                [src]="'assets/images/apps/ecommerce/products/3.jpg'">
-                        </div>
+                    <div>
+                        <button mat-flat-button [color]="'primary'" (click)="openConfirmationDialog()">
+                            <span>Share</span>
+                        </button>                        
                     </div>
-                    <!-- SKU -->
-                    <div class="hidden md:block truncate">7116c200-6663-3503-8314-1ee16845e5d3</div>
-                    <!-- Active -->
-                    <div class="hidden lg:block">Healthcare Provider</div>
-                    <!-- Name -->
-                    <div class="truncate">SAINTS WALK-IN MEDICAL CENTER - URGENT CARE AND OCCUPATIONAL HEALTH</div>
-                    <!-- SKU -->
-                    <div>Y/N</div>
 
                 </div>
 
@@ -194,7 +182,7 @@
 
                                     <!-- SKU -->
                                     <div class="hidden md:block truncate">
-                                        {{product.record.resource.id}}
+                                        {{product.id}}
                                     </div>
 
                                     <!-- Name -->

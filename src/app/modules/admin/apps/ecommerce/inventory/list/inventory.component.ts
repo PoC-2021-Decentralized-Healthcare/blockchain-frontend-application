@@ -9,6 +9,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { InventoryBrand, InventoryCategory, InventoryPagination, InventoryProduct, InventoryTag, InventoryVendor, patientRecord } from 'app/modules/admin/apps/ecommerce/inventory/inventory.types';
 import { InventoryService } from 'app/modules/admin/apps/ecommerce/inventory/inventory.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector       : 'inventory-list',
@@ -32,18 +33,18 @@ import { InventoryService } from 'app/modules/admin/apps/ecommerce/inventory/inv
                 }
             }
             .inventory-grid-2 {
-                grid-template-columns: 48px 256px 196px auto 48px;
+                grid-template-columns: 48px 256px 196px auto 56px;
 
                 @screen sm {
-                    grid-template-columns: 48px 256px 196px auto 48px;
+                    grid-template-columns: 48px 256px 196px auto 56px;
                 }
 
                 @screen md {
-                    grid-template-columns: 48px 256px 196px auto 48px;
+                    grid-template-columns: 48px 256px 196px auto 56px;
                 }
 
                 @screen lg {
-                    grid-template-columns: 48px 256px 196px auto 48px;
+                    grid-template-columns: 48px 256px 196px auto 56px;
                 }
             }            
         `
@@ -72,7 +73,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     tagsEditMode: boolean = false;
     vendors: InventoryVendor[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-
+    configForm: FormGroup;
 
     showShare: boolean = false;
     /**
@@ -82,7 +83,8 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseConfirmationService: FuseConfirmationService,
         private _formBuilder: FormBuilder,
-        private _inventoryService: InventoryService
+        private _inventoryService: InventoryService,
+        private _httpClient: HttpClient
     )
     {
     }
@@ -96,6 +98,32 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
      */
     ngOnInit(): void
     {
+
+
+        // Build the config form
+        this.configForm = this._formBuilder.group({
+            title      : 'Share medical records',
+            message    : 'Are you sure you want to share your Medical records with the selected organization?',
+            icon       : this._formBuilder.group({
+                show : true,
+                name : 'heroicons_outline:exclamation',
+                color: 'warn'
+            }),
+            actions    : this._formBuilder.group({
+                confirm: this._formBuilder.group({
+                    show : true,
+                    label: 'Share',
+                    color: 'warn'
+                }),
+                cancel : this._formBuilder.group({
+                    show : true,
+                    label: 'Cancel'
+                })
+            }),
+            dismissible: true
+        });
+        
+        
         // Create the selected product form
         this.selectedProductForm = this._formBuilder.group({
             id               : [''],
@@ -119,8 +147,6 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
             currentImageIndex: [0], // Image index that is currently being viewed
             active           : [false]
         });
-
-
 
 
         // Get the brands
@@ -595,4 +621,44 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     {
         return item.id || index;
     }
+
+
+
+    /**
+     * Open confirmation dialog
+     */
+     openConfirmationDialog(): void
+    {
+        // Open the dialog and save the reference of it
+        const dialogRef = this._fuseConfirmationService.open(this.configForm.value);
+
+        // Subscribe to afterClosed from the dialog reference
+        dialogRef.afterClosed().subscribe((result) => {
+            if(result === 'cancelled') {
+
+            } else {
+                this.shareWith()
+            }
+            console.log(result);
+            
+        });
+    }
+    
+    
+    shareWith() {
+
+        this._httpClient.post<any>('http://localhost:8080/shareAllAssets', { shared: 'G.C.Sakellaris' }).subscribe({
+        next: data => {
+            console.log(data)
+        },
+        error: error => {
+            console.error('There was an error!', error);
+        }
+    })
+
+
+    }
+
 }
+
+

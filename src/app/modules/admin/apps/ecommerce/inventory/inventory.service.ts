@@ -123,7 +123,39 @@ export class InventoryService
      * @param order
      * @param search
      */
-    getProducts(page: number = 0, size: number = 10, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
+
+
+
+     getProducts(page: number = 0, size: number = 10, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
+     Observable<any[]>
+    {
+        return this._httpClient.get<any[]>('http://localhost:8080/getAllAssets', {
+            params: {
+                page: '' + page,
+                size: '' + size,
+                sort,
+                order,
+                search
+            }
+        }).pipe(
+            tap((response) => {
+                console.log(response);
+                this._pagination.next({
+                    "length": 2,
+                    "size": 10,
+                    "page": 0,
+                    "lastPage": 1,
+                    "startIndex": 0,
+                    "endIndex": 1
+                });
+                this._products.next(response);
+            })
+        );
+    }
+
+    
+
+    getProducts_orig(page: number = 0, size: number = 10, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
         Observable<{ pagination: InventoryPagination; products: InventoryProduct[] }>
     {
         return this._httpClient.get<{ pagination: InventoryPagination; products: InventoryProduct[] }>('api/apps/ecommerce/inventory/products', {
@@ -136,11 +168,14 @@ export class InventoryService
             }
         }).pipe(
             tap((response) => {
+                console.log(response);
                 this._pagination.next(response.pagination);
                 this._products.next(response.products);
             })
         );
     }
+
+    
 
     /**
      * Get product by id
