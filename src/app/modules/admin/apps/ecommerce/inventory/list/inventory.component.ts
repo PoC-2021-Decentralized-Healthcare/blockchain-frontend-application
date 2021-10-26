@@ -12,9 +12,9 @@ import { InventoryService } from 'app/modules/admin/apps/ecommerce/inventory/inv
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-    selector       : 'inventory-list',
-    templateUrl    : './inventory.component.html',
-    styles         : [
+    selector: 'inventory-list',
+    templateUrl: './inventory.component.html',
+    styles: [
         /* language=SCSS */
         `
             .inventory-grid {
@@ -49,12 +49,11 @@ import { HttpClient } from '@angular/common/http';
             }            
         `
     ],
-    encapsulation  : ViewEncapsulation.None,
+    encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations     : fuseAnimations
+    animations: fuseAnimations
 })
-export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
-{
+export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
 
@@ -74,6 +73,8 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     vendors: InventoryVendor[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     configForm: FormGroup;
+    configSuccessForm: FormGroup;
+    userData = JSON.parse(sessionStorage.getItem('userData'));
 
     showShare: boolean = false;
     /**
@@ -85,8 +86,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
         private _formBuilder: FormBuilder,
         private _inventoryService: InventoryService,
         private _httpClient: HttpClient
-    )
-    {
+    ) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -96,56 +96,80 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
 
 
         // Build the config form
         this.configForm = this._formBuilder.group({
-            title      : 'Share medical records',
-            message    : 'Are you sure you want to share your Medical records with the selected organization?',
-            icon       : this._formBuilder.group({
-                show : true,
-                name : 'heroicons_outline:exclamation',
+            title: 'Share medical records',
+            message: 'Are you sure you want to share your Medical records with the selected organization?',
+            icon: this._formBuilder.group({
+                show: true,
+                name: 'heroicons_outline:exclamation',
                 color: 'warn'
             }),
-            actions    : this._formBuilder.group({
+            actions: this._formBuilder.group({
                 confirm: this._formBuilder.group({
-                    show : true,
+                    show: true,
                     label: 'Share',
                     color: 'warn'
                 }),
-                cancel : this._formBuilder.group({
-                    show : true,
+                cancel: this._formBuilder.group({
+                    show: true,
                     label: 'Cancel'
                 })
             }),
-            dismissible: true
+            dismissible: false
         });
-        
-        
+
+        // Build the config form
+        this.configSuccessForm = this._formBuilder.group({
+            title: 'Share medical records',
+            message: 'Your medical records shared!',
+            icon: this._formBuilder.group({
+                show: true,
+                name: 'heroicons_outline:check',
+                color: 'success'
+            }),
+            actions: this._formBuilder.group({
+                confirm: this._formBuilder.group({
+                    show: false,
+                    label: 'OK',
+                    color: 'success'
+                }),
+                cancel: this._formBuilder.group({
+                    show: true,
+                    label: 'Close'
+                })
+            }),
+            dismissible: false
+        });
+
+
+
+
         // Create the selected product form
         this.selectedProductForm = this._formBuilder.group({
-            id               : [''],
-            category         : [''],
-            name             : ['', [Validators.required]],
-            description      : [''],
-            tags             : [[]],
-            sku              : [''],
-            barcode          : [''],
-            brand            : [''],
-            vendor           : [''],
-            stock            : [''],
-            reserved         : [''],
-            cost             : [''],
-            basePrice        : [''],
-            taxPercent       : [''],
-            price            : [''],
-            weight           : [''],
-            thumbnail        : [''],
-            images           : [[]],
+            id: [''],
+            category: [''],
+            name: ['', [Validators.required]],
+            description: [''],
+            tags: [[]],
+            sku: [''],
+            barcode: [''],
+            brand: [''],
+            vendor: [''],
+            stock: [''],
+            reserved: [''],
+            cost: [''],
+            basePrice: [''],
+            taxPercent: [''],
+            price: [''],
+            weight: [''],
+            thumbnail: [''],
+            images: [[]],
             currentImageIndex: [0], // Image index that is currently being viewed
-            active           : [false]
+            active: [false]
         });
 
 
@@ -233,10 +257,8 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     /**
      * After view init
      */
-    ngAfterViewInit(): void
-    {
-        if ( this._sort && this._paginator )
-        {
+    ngAfterViewInit(): void {
+        if (this._sort && this._paginator) {
             // Set the initial sort
 
             // Mark for check
@@ -270,8 +292,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
@@ -286,11 +307,9 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
      *
      * @param productId
      */
-    toggleDetails(productId: string): void
-    {
+    toggleDetails(productId: string): void {
         // If the product is already selected...
-        if ( this.selectedProduct && this.selectedProduct.id === productId )
-        {
+        if (this.selectedProduct && this.selectedProduct.id === productId) {
             // Close the details
             this.closeDetails();
             return;
@@ -314,16 +333,14 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     /**
      * Close the details
      */
-    closeDetails(): void
-    {
+    closeDetails(): void {
         this.selectedProduct = null;
     }
 
     /**
      * Cycle through images of selected product
      */
-    cycleImages(forward: boolean = true): void
-    {
+    cycleImages(forward: boolean = true): void {
         // Get the image count and current image index
         const count = this.selectedProductForm.get('images').value.length;
         const currentIndex = this.selectedProductForm.get('currentImageIndex').value;
@@ -333,13 +350,11 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
         const prevIndex = currentIndex - 1 < 0 ? count - 1 : currentIndex - 1;
 
         // If cycling forward...
-        if ( forward )
-        {
+        if (forward) {
             this.selectedProductForm.get('currentImageIndex').setValue(nextIndex);
         }
         // If cycling backwards...
-        else
-        {
+        else {
             this.selectedProductForm.get('currentImageIndex').setValue(prevIndex);
         }
     }
@@ -347,8 +362,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     /**
      * Toggle the tags edit mode
      */
-    toggleTagsEditMode(): void
-    {
+    toggleTagsEditMode(): void {
         this.tagsEditMode = !this.tagsEditMode;
     }
 
@@ -357,8 +371,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
      *
      * @param event
      */
-    filterTags(event): void
-    {
+    filterTags(event): void {
         // Get the value
         const value = event.target.value.toLowerCase();
 
@@ -371,17 +384,14 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
      *
      * @param event
      */
-    filterTagsInputKeyDown(event): void
-    {
+    filterTagsInputKeyDown(event): void {
         // Return if the pressed key is not 'Enter'
-        if ( event.key !== 'Enter' )
-        {
+        if (event.key !== 'Enter') {
             return;
         }
 
         // If there is no tag available...
-        if ( this.filteredTags.length === 0 )
-        {
+        if (this.filteredTags.length === 0) {
             // Create the tag
             this.createTag(event.target.value);
 
@@ -394,17 +404,15 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
 
         // If there is a tag...
         const tag = this.filteredTags[0];
-        const isTagApplied = false 
-        
+        const isTagApplied = false
+
 
         // If the found tag is already applied to the product...
-        if ( isTagApplied )
-        {
+        if (isTagApplied) {
             // Remove the tag from the product
             this.removeTagFromProduct(tag);
         }
-        else
-        {
+        else {
             // Otherwise add the tag to the product
             this.addTagToProduct(tag);
         }
@@ -415,8 +423,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
      *
      * @param title
      */
-    createTag(title: string): void
-    {
+    createTag(title: string): void {
         const tag = {
             title
         };
@@ -436,8 +443,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
      * @param tag
      * @param event
      */
-    updateTagTitle(tag: InventoryTag, event): void
-    {
+    updateTagTitle(tag: InventoryTag, event): void {
         // Update the title on the tag
         tag.title = event.target.value;
 
@@ -455,8 +461,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
      *
      * @param tag
      */
-    deleteTag(tag: InventoryTag): void
-    {
+    deleteTag(tag: InventoryTag): void {
         // Delete the tag from the server
         this._inventoryService.deleteTag(tag.id).subscribe();
 
@@ -469,8 +474,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
      *
      * @param tag
      */
-    addTagToProduct(tag: InventoryTag): void
-    {
+    addTagToProduct(tag: InventoryTag): void {
 
     }
 
@@ -479,8 +483,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
      *
      * @param tag
      */
-    removeTagFromProduct(tag: InventoryTag): void
-    {
+    removeTagFromProduct(tag: InventoryTag): void {
 
     }
 
@@ -490,14 +493,11 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
      * @param tag
      * @param change
      */
-    toggleProductTag(tag: InventoryTag, change: MatCheckboxChange): void
-    {
-        if ( change.checked )
-        {
+    toggleProductTag(tag: InventoryTag, change: MatCheckboxChange): void {
+        if (change.checked) {
             this.addTagToProduct(tag);
         }
-        else
-        {
+        else {
             this.removeTagFromProduct(tag);
         }
     }
@@ -507,8 +507,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
      *
      * @param inputValue
      */
-    shouldShowCreateTagButton(inputValue: string): boolean
-    {
+    shouldShowCreateTagButton(inputValue: string): boolean {
         return !!!(inputValue === '' || this.tags.findIndex(tag => tag.title.toLowerCase() === inputValue.toLowerCase()) > -1);
     }
 
@@ -519,8 +518,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     /**
      * Create product
      */
-    createProduct(): void
-    {
+    createProduct(): void {
         // Create the product
         this._inventoryService.createProduct().subscribe((newProduct) => {
 
@@ -538,8 +536,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     /**
      * Update the selected product using the form data
      */
-    updateSelectedProduct(): void
-    {
+    updateSelectedProduct(): void {
         // Get the product object
         const product = this.selectedProductForm.getRawValue();
 
@@ -557,11 +554,10 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     /**
      * Delete the selected product using the form data
      */
-    deleteSelectedProduct(): void
-    {
+    deleteSelectedProduct(): void {
         // Open the confirmation dialog
         const confirmation = this._fuseConfirmationService.open({
-            title  : 'Delete product',
+            title: 'Delete product',
             message: 'Are you sure you want to remove this product? This action cannot be undone!',
             actions: {
                 confirm: {
@@ -574,8 +570,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
         confirmation.afterClosed().subscribe((result) => {
 
             // If the confirm button pressed...
-            if ( result === 'confirmed' )
-            {
+            if (result === 'confirmed') {
 
                 // Get the product object
                 const product = this.selectedProductForm.getRawValue();
@@ -593,8 +588,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     /**
      * Show flash message
      */
-    showFlashMessage(type: 'success' | 'error'): void
-    {
+    showFlashMessage(type: 'success' | 'error'): void {
         // Show the message
         this.flashMessage = type;
 
@@ -617,8 +611,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
      * @param index
      * @param item
      */
-    trackByFn(index: number, item: any): any
-    {
+    trackByFn(index: number, item: any): any {
         return item.id || index;
     }
 
@@ -627,34 +620,56 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     /**
      * Open confirmation dialog
      */
-     openConfirmationDialog(): void
-    {
+    openConfirmationDialog(shareId: string): void {
         // Open the dialog and save the reference of it
         const dialogRef = this._fuseConfirmationService.open(this.configForm.value);
 
         // Subscribe to afterClosed from the dialog reference
         dialogRef.afterClosed().subscribe((result) => {
-            if(result === 'cancelled') {
+            if (result === 'cancelled') {
 
             } else {
-                this.shareWith()
+                this.shareWith(shareId)
             }
             console.log(result);
-            
+
         });
     }
-    
-    
-    shareWith() {
 
-        this._httpClient.post<any>('http://localhost:8080/shareAllAssets', { shared: 'G.C.Sakellaris' }).subscribe({
-        next: data => {
-            console.log(data)
-        },
-        error: error => {
-            console.error('There was an error!', error);
+
+    /**
+     * Open confirmation dialog
+     */
+    successDialog(): void {
+        // Open the dialog and save the reference of it
+        const dialogRef = this._fuseConfirmationService.open(this.configSuccessForm.value);
+
+        // Subscribe to afterClosed from the dialog reference
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log(result);
+
+        });
+    }
+
+    shareWith(shareId: string) {
+
+        let shareparams = {
+            shared: shareId
         }
-    })
+
+        this._httpClient.post<any>('http://localhost:8080/shareAllAssets', shareparams).subscribe({
+            next: data => {
+                console.log(data)
+
+
+                this.successDialog()
+
+
+            },
+            error: error => {
+                console.error('There was an error!', error);
+            }
+        })
 
 
     }

@@ -2,7 +2,31 @@
 import { FuseNavigationItem } from '@fuse/components/navigation';
 
 
-export const defaultNavigation: FuseNavigationItem[] = [
+export const hospitalNavigation: FuseNavigationItem[] = [
+    {
+        id      : 'dashboards',
+        title   : 'Medical Records',
+        subtitle: 'Get patient\'s medical records from Blockchain',
+        type    : 'group',
+        icon    : 'heroicons_outline:home',
+        children: [
+
+            {
+                id   : 'apps.medical.records',
+                title: 'Patient\'s Medical Records',
+                type : 'basic',
+                link : '/apps/medical/inventory'
+            }
+            
+
+        ]
+    } 
+    
+
+];
+
+
+export const patientNavigation: FuseNavigationItem[] = [
     {
         id      : 'dashboards',
         title   : 'Medical Records',
@@ -21,13 +45,44 @@ export const defaultNavigation: FuseNavigationItem[] = [
 
         ]
     } 
-    
 
 ];
 
 
+export const medicallabNavigation: FuseNavigationItem[] = [
+    {
+        id      : 'dashboards',
+        title   : 'Medical Records',
+        subtitle: 'Upload medical records to user\'s Blockchain',
+        type    : 'group',
+        icon    : 'heroicons_outline:home',
+        children: [
+
+            {
+                id   : 'apps.medical.records',
+                title: 'Upload Medical Records',
+                type : 'basic',
+                link : '/apps/medical/inventory'
+            }
+            
+
+        ]
+    } 
+
+];
 
 
+let userData = JSON.parse(sessionStorage.getItem('userData'));
+
+let pocNavigation = patientNavigation
+if(userData.id == 'efaad35d-07a3-4447-a6c3-d8c3d54fd5dh') {
+    pocNavigation = medicallabNavigation
+}
+else if (userData.id == 'dfaad35d-07a3-4447-a6c3-d8c3d54fd5dg'){
+    pocNavigation = hospitalNavigation
+}
+
+export const defaultNavigation = pocNavigation
 
 export const defaultNavigation_2: FuseNavigationItem[] = [
     {

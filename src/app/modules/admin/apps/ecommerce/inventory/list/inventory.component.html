@@ -8,7 +8,14 @@
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
         <!-- Title -->
-        <div class="text-4xl font-extrabold tracking-tight">My Medical Records (FHIR R4)</div>
+
+        <ng-container *ngIf="this.userData.id == 'cfaad35d-07a3-4447-a6c3-d8c3d54fd5df'">
+            <div class="text-4xl font-extrabold tracking-tight">My Medical Records (FHIR R4)</div>
+        </ng-container>
+
+        <ng-container *ngIf="this.userData.id == 'dfaad35d-07a3-4447-a6c3-d8c3d54fd5dg'">
+            <div class="text-4xl font-extrabold tracking-tight">Shared Patient's Medical Records(FHIR R4)</div>
+        </ng-container>        
 
         <!-- Actions -->
         <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
@@ -19,10 +26,12 @@
                     [placeholder]="'Search Medical Records'">
             </mat-form-field>
             <!-- Add product button -->
+            <ng-container *ngIf="this.userData.id == 'cfaad35d-07a3-4447-a6c3-d8c3d54fd5df'">
             <button class="ml-4" mat-flat-button [color]="'primary'" (click)="toggleShare()">
                 <mat-icon [svgIcon]="'heroicons_outline:share'"></mat-icon>
                 <span class="ml-2 mr-1">Share My Records</span>
             </button>
+            </ng-container>
         </div>
 
     </div>
@@ -34,6 +43,10 @@
 
         <!-- Products list -->
         <div class="flex flex-col flex-auto sm:mb-2 overflow-hidden sm:overflow-y-auto">
+
+
+
+
 
             <div class="grid">
                 <!-- Header -->
@@ -74,12 +87,12 @@
                     <!-- SKU -->
                     <div class="hidden md:block truncate">dfaad35d-07a3-4447-a6c3-d8c3d54fd5dg</div>
                     <!-- Active -->
-                    <div class="hidden lg:block">Hospital@Blockchain</div>
+                    <div class="hidden lg:block">doctor@Blockchain</div>
                     <!-- Name -->
-                    <div class="truncate">hospital@blockchain.com</div>
+                    <div class="truncate">doctor@blockchain.com</div>
                     <!-- SKU -->
                     <div>
-                        <button mat-flat-button [color]="'primary'" (click)="openConfirmationDialog()">
+                        <button mat-flat-button [color]="'primary'" (click)="openConfirmationDialog('dfaad35d-07a3-4447-a6c3-d8c3d54fd5dg')">
                             <span>Share</span>
                         </button>                        
                     </div>
@@ -103,7 +116,7 @@
                     <div class="truncate">LOWELL GENERAL HOSPITAL</div>
                     <!-- SKU -->
                     <div>
-                        <button mat-flat-button [color]="'primary'" (click)="openConfirmationDialog()">
+                        <button mat-flat-button [color]="'primary'" (click)="openConfirmationDialog('b0e04623-b02c-3f8b-92ea-943fc4db60da')">
                             <span>Share</span>
                         </button>                        
                     </div>
@@ -222,10 +235,6 @@
 
 
 
-
-
-
-
                                     <!-- Details button -->
                                     <div>
                                         <button class="min-w-10 min-h-7 h-7 px-2 leading-6" mat-stroked-button
@@ -271,7 +280,7 @@
 
             <ng-template #noProducts>
                 <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no
-                    products!</div>
+                    medical records!</div>
             </ng-template>
 
         </div>

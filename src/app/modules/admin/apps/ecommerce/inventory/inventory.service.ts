@@ -129,8 +129,11 @@ export class InventoryService
      getProducts(page: number = 0, size: number = 10, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
      Observable<any[]>
     {
+        let userData = JSON.parse(sessionStorage.getItem('userData'));
+
         return this._httpClient.get<any[]>('http://localhost:8080/getAllAssets', {
             params: {
+                user: userData.id,
                 page: '' + page,
                 size: '' + size,
                 sort,
