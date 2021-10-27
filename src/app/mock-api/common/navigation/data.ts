@@ -62,7 +62,7 @@ export const medicallabNavigation: FuseNavigationItem[] = [
                 id   : 'apps.medical.records',
                 title: 'Upload Medical Records',
                 type : 'basic',
-                link : '/apps/medical/inventory'
+                link : '/apps/profile'
             }
             
 
@@ -75,10 +75,10 @@ export const medicallabNavigation: FuseNavigationItem[] = [
 let userData = JSON.parse(sessionStorage.getItem('userData'));
 
 let pocNavigation = patientNavigation
-if(userData.id == 'efaad35d-07a3-4447-a6c3-d8c3d54fd5dh') {
+if(userData && userData.id == 'efaad35d-07a3-4447-a6c3-d8c3d54fd5dh') {
     pocNavigation = medicallabNavigation
 }
-else if (userData.id == 'dfaad35d-07a3-4447-a6c3-d8c3d54fd5dg'){
+else if (userData && userData.id == 'dfaad35d-07a3-4447-a6c3-d8c3d54fd5dg'){
     pocNavigation = hospitalNavigation
 }
 

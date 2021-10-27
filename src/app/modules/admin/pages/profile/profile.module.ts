@@ -11,6 +11,7 @@ import { FuseCardModule } from '@fuse/components/card';
 import { SharedModule } from 'app/shared/shared.module';
 import { ProfileComponent } from 'app/modules/admin/pages/profile/profile.component';
 import { profileRoutes } from 'app/modules/admin/pages/profile/profile.routing';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
     declarations: [
@@ -26,7 +27,8 @@ import { profileRoutes } from 'app/modules/admin/pages/profile/profile.routing';
         MatMenuModule,
         MatTooltipModule,
         FuseCardModule,
-        SharedModule
+        SharedModule,
+        MatCheckboxModule
     ]
 })
 export class ProfileModule
