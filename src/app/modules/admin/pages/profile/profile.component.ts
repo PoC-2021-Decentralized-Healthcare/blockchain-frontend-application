@@ -30,7 +30,7 @@ export class ProfileComponent
 
         // Build the config form
         this.configForm = this._formBuilder.group({
-            title: 'Share medical records',
+            title: 'Transfer medical records',
             message: 'Are you sure you want to transfer the medical records to user\'s own record?',
             icon: this._formBuilder.group({
                 show: true,
