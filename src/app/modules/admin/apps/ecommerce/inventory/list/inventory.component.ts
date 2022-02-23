@@ -10,6 +10,7 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { InventoryBrand, InventoryCategory, InventoryPagination, InventoryProduct, InventoryTag, InventoryVendor, patientRecord } from 'app/modules/admin/apps/ecommerce/inventory/inventory.types';
 import { InventoryService } from 'app/modules/admin/apps/ecommerce/inventory/inventory.service';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../../../environments/environment';
 
 @Component({
     selector: 'inventory-list',
@@ -58,6 +59,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
     @ViewChild(MatSort) private _sort: MatSort;
 
     products$: Observable<InventoryProduct[]>;
+    apiURL = environment.apiURL;
 
     brands: InventoryBrand[];
     categories: InventoryCategory[];
@@ -657,7 +659,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
             shared: shareId
         }
 
-        this._httpClient.post<any>('http://localhost:8080/shareAllAssets', shareparams).subscribe({
+        this._httpClient.post<any>(this.apiURL + '/shareAllAssets', shareparams).subscribe({
             next: data => {
                 console.log(data)
 

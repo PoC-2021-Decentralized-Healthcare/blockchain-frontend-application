@@ -4,10 +4,12 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class AuthService
 {
+    apiURL = environment.apiURL;
     private _authenticated: boolean = false;
 
     /**
@@ -75,7 +77,7 @@ export class AuthService
         }
 
 
-        return this._httpClient.post('http://localhost:8080/enrollUser', credentials).pipe(
+        return this._httpClient.post(this.apiURL + '/enrollUser', credentials).pipe(
             switchMap((response: any) => {
 
                 // Store the access token in the local storage

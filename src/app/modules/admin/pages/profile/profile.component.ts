@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
 import { HttpClient } from '@angular/common/http';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
     selector       : 'profile',
@@ -16,6 +17,7 @@ export class ProfileComponent
      */
     configForm: FormGroup;
     configSuccessForm: FormGroup;
+    apiURL = environment.apiURL;
 
     constructor(
         private _httpClient: HttpClient,
@@ -325,7 +327,7 @@ export class ProfileComponent
 
     transferMedicalRecords(): void {
 
-        this._httpClient.post<any>('http://localhost:8080/loadAssets', this.medicalRecords).subscribe({
+        this._httpClient.post<any>(this.apiURL + '/loadAssets', this.medicalRecords).subscribe({
             next: data => {
                 console.log(data)
                 this.successDialog()

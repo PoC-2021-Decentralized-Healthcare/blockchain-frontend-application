@@ -3,12 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { InventoryBrand, InventoryCategory, InventoryPagination, InventoryProduct, InventoryTag, InventoryVendor } from 'app/modules/admin/apps/ecommerce/inventory/inventory.types';
+import { environment } from '../../../../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class InventoryService
 {
+    apiURL = environment.apiURL;
+
     // Private
     private _brands: BehaviorSubject<InventoryBrand[] | null> = new BehaviorSubject(null);
     private _categories: BehaviorSubject<InventoryCategory[] | null> = new BehaviorSubject(null);
@@ -131,7 +134,7 @@ export class InventoryService
     {
         let userData = JSON.parse(sessionStorage.getItem('userData'));
 
-        return this._httpClient.get<any[]>('http://localhost:8080/getAllAssets', {
+        return this._httpClient.get<any[]>(this.apiURL + '/getAllAssets', {
             params: {
                 user: userData.id,
                 page: '' + page,
