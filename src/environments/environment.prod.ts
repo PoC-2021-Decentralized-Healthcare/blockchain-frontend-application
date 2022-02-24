@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiURL: 'http://mediblock.gr:8080'
+    apiURL: 'http://mediblock.xyz:8080'
 };
